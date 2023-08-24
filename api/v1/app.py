@@ -22,7 +22,7 @@ def storage_close(exception):
 @app.errorhandler(404)
 def error_handler(exception):
     """handle 404 error"""
-    return jsonify({"error": "Not found"}, 404)
+    return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
