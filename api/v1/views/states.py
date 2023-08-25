@@ -41,10 +41,10 @@ def create_state():
     data = request.get_json()
 
     if data is None:
-        abort(400, 'Not a JSON')
+        abort(400, description='Not a JSON')
 
     if 'name' not in data:
-        abort(400, 'Missing name')
+        abort(400, description='Missing name')
 
     state = State(**data)
     # state = State({key: data[key] for key in data.keys()})
