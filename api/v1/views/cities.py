@@ -24,9 +24,9 @@ def get_state_cities(state_id):
 def get_cities(city_id):
     """Retrieves a City object"""
     city = storage.get(City, city_id)
-    if not city:
+    if city is None:
         abort(404)
-    return city.to_dict()
+    return jsonify(city.to_dict())
 
 
 @app_views.route('cities/<city_id>', methods=['DELETE'])
@@ -39,13 +39,17 @@ def delete_city(city_id):
 
     storage.delete(city)
     storage.save()
-    return (jsonify({}), 200)
+    return jsonify({}), 200
 
 
 @app_views.route("states/<state_id>/cities", methods=["POST"])
 def post_city(state_id):
-    """POST API route"""
-    data = request.get_json
+    """POST API route, creates a new city"""
+
+    if storage.get(State, state_id) is None:
+        abort(404)
+
+    data = request.get_json()
 
     if data is None:
         return abort(400, description='Not a JSON')
@@ -62,7 +66,7 @@ def post_city(state_id):
 @app_views.route("/cities/<city_id>", methods=["PUT"])
 def put_city(city_id):
     """PUT API route"""
-    data = request.get_json
+    data = request.get_json()
 
     if data is None:
         abort(400, description='Not a JSON')
@@ -73,7 +77,7 @@ def put_city(city_id):
         abort(404)
 
     for key, value in data.items():
-        if key not in ["id", "created_at", "updated_at"]:
+        if key not in ["id", "created_at", "updated_at", "state_id"]:
             setattr(city, key, value)
     city.save()
 
