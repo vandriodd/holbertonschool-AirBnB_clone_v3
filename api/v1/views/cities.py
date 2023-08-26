@@ -52,7 +52,7 @@ def post_city(state_id):
     data = request.get_json()
 
     if data is None:
-        return abort(400, description='Not a JSON')
+        abort(400, description='Not a JSON')
 
     if "name" not in data:
         abort(400, description='Missing name')
