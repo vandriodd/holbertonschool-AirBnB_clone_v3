@@ -56,7 +56,7 @@ def post_city(state_id):
     data['state_id'] = state_id
     city = City(**data)
     city.save()
-    return jsonify(state.to_dict()), 201
+    return jsonify(city.to_dict()), 201
 
 
 @app_views.route("/cities/<city_id>", methods=["PUT"])
